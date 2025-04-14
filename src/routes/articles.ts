@@ -24,7 +24,11 @@ router.get('/', async (req, res) => {
                     audioUrl: article.audioUrl || null
                 }
             } catch (err) {
-                console.error(`❌ Failed to load article "${file}":`, err.message)
+                if (err instanceof Error) {
+                    console.error(`❌ Failed to load article "${file}":`, err.message)
+                } else {
+                    console.error(`❌ Failed to load article "${file}":`, err)
+                }
                 return null
             }
         })
