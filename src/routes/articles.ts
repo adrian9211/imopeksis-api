@@ -3,26 +3,35 @@ import fs from 'fs'
 import path from 'path'
 
 const router = Router()
-const articlesDir = path.resolve('./articles')
+const articlesDir = path.resolve('articles') // ✅ points to root-level articles folder
 
 router.get('/', async (req, res) => {
     const files = fs.readdirSync(articlesDir).filter(file => file.endsWith('.ts'))
 
     const articles = await Promise.all(
         files.map(async (file) => {
-            const { default: article } = await import(`../../articles/${file}`)
-            return {
-                title: article.title,
-                slug: article.slug,
-                audience: article.audience,
-                keywords: article.keywords,
-                content: article.content,
-                audioUrl: article.audioUrl || null
+            try {
+                // Use file:// URL scheme for dynamic import in ESM
+                const filePath = path.resolve(articlesDir, file)
+                const { default: article } = await import(`file://${filePath}`)
+
+                return {
+                    title: article.title,
+                    slug: article.slug,
+                    audience: article.audience,
+                    keywords: article.keywords,
+                    content: article.content,
+                    audioUrl: article.audioUrl || null
+                }
+            } catch (err) {
+                console.error(`❌ Failed to load article "${file}":`, err.message)
+                return null
             }
         })
     )
 
-    res.json(articles)
+    // Filter out failed/null results
+    res.json(articles.filter(Boolean))
 })
 
 router.get('/:slug/audio', (req, res) => {
@@ -31,7 +40,7 @@ router.get('/:slug/audio', (req, res) => {
     if (fs.existsSync(filePath)) {
         res.sendFile(filePath)
     } else {
-        res.status(404).send("Audio not found")
+        res.status(404).send('Audio not found')
     }
 })
 
