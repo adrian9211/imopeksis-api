@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 const router = Router()
-const articlesDir = path.resolve('articles')
+const articlesDir = path.resolve('./articles')
 
 router.get('/', async (req, res) => {
     const files = fs.readdirSync(articlesDir).filter(file => file.endsWith('.ts'))
