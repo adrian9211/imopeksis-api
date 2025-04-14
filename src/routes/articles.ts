@@ -4,7 +4,6 @@ import path from 'path'
 
 const router = Router()
 const articlesDir = path.resolve('articles') // ✅ points to root-level articles folder
-const audioDir = path.resolve('public/audio')
 
 router.get('/', async (req, res) => {
     const files = fs.readdirSync(articlesDir).filter(file => file.endsWith('.ts'))
@@ -41,16 +40,12 @@ router.get('/', async (req, res) => {
 
 router.get('/:slug/audio', (req, res) => {
     const slug = req.params.slug
-    const filePath = path.resolve(audioDir, `${slug}.mp3`)
+    const filePath = path.resolve(`public/audio/${slug}.mp3`)
     if (fs.existsSync(filePath)) {
         res.sendFile(filePath)
     } else {
         res.status(404).send('Audio not found')
     }
 })
+
 export default router
-
-
-
-
-
