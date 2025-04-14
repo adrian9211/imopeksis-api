@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "es2020",
     "module": "commonjs",
-    "moduleResolution": "node",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./src",                // ✅ This stays correct
+    "strict": true,
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true,
     "types": ["node"]
   },
-  "include": ["src", "articles"]
+  "include": [
+    "src",                             // ✅ All TypeScript in your app
+    "articles/*.ts"                    // ✅ Allow loose article files outside src/
+  ]
 }
