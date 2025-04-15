@@ -6,17 +6,27 @@ const router = Router()
 const articlesDir = path.resolve('articles') // ✅ points to root-level articles folder
 
 router.get('/', async (req, res) => {
-    res.json([
-        {
-            title: "Intro to Imopeksis",
-            slug: "intro-imopeksis",
-            audience: ["Parents", "Teachers"],
-            keywords: ["method", "basics"],
-            content: "Imopeksis is a philosophy of training and development...",
-            audioUrl: "https://imopeksis-api.onrender.com/audio/intro-imopeksis.mp3"
-        }
-    ])
+    try {
+        // Dynamically import the index.ts from the articles folder
+        const indexPath = path.resolve('articles/index.ts')
+        const { default: articleMap } = await import(`file://${indexPath}`)
+
+        const articles = Object.values(articleMap).map((article: any) => ({
+            title: article.title,
+            slug: article.slug,
+            audience: article.audience,
+            keywords: article.keywords,
+            content: article.content,
+            audioUrl: article.audio?.src || `https://imopeksis-api.onrender.com/audio/${article.slug}.mp3`
+        }))
+
+        res.json(articles)
+    } catch (err) {
+        console.error("❌ Failed to load articles:", err)
+        res.status(500).json({ error: "Failed to load articles" })
+    }
 })
+
 
 router.get('/:slug/audio', (req, res) => {
     const slug = req.params.slug
