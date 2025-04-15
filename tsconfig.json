@@ -2,8 +2,8 @@
   "compilerOptions": {
     "target": "es2020",
     "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "outDir": "dist",
+//    "rootDir": "src",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -11,5 +11,5 @@
     "types": ["node"],
     "allowSyntheticDefaultImports": true
   },
-  "include": ["articles/**/*.ts", "routes/**/*.ts"]
+  "include": ["articles/**/*.ts", "routes/**/*.ts", "src/**/*.ts"]
 }
