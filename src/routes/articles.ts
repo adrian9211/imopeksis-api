@@ -3,16 +3,17 @@ import fs from 'fs'
 import path from 'path'
 
 const router = Router()
-const indexPath = path.resolve('dist/articles/index.js') // compiled .js file
+
+const indexPath = path.resolve('dist/articles/index.js') // compiled JS version
 const audioDir = path.resolve('public/audio')
 
-// GET /articles - List all articles
+// GET /articles
 router.get('/', async (req, res) => {
     try {
         const { default: articleMap } = await import(`file://${indexPath}`)
 
         const articles = Object.values(articleMap)
-            .filter((article: any) => article && article.slug)
+            .filter((article: any) => article?.slug)
             .map((article: any) => ({
                 title: article.title,
                 slug: article.slug,
@@ -29,12 +30,11 @@ router.get('/', async (req, res) => {
     }
 })
 
-// GET /articles/:slug - Get a single article by slug
+// GET /articles/:slug
 router.get('/:slug', async (req, res) => {
     try {
         const { default: articleMap } = await import(`file://${indexPath}`)
-        const slug = req.params.slug
-        const article = articleMap[slug]
+        const article = articleMap[req.params.slug]
 
         if (!article) {
             return res.status(404).json({ error: "Article not found" })
@@ -42,7 +42,7 @@ router.get('/:slug', async (req, res) => {
 
         res.json({
             ...article,
-            audioUrl: article.audio?.src || `https://imopeksis-api.onrender.com/audio/${slug}.mp3`
+            audioUrl: article.audio?.src || `https://imopeksis-api.onrender.com/audio/${article.slug}.mp3`
         })
     } catch (err) {
         console.error(`❌ Error loading article "${req.params.slug}":`, err)
@@ -50,11 +50,9 @@ router.get('/:slug', async (req, res) => {
     }
 })
 
-// GET /articles/:slug/audio - Serve article audio file
+// GET /articles/:slug/audio
 router.get('/:slug/audio', (req, res) => {
-    const slug = req.params.slug
-    const filePath = path.join(audioDir, `${slug}.mp3`)
-
+    const filePath = path.resolve(`public/audio/${req.params.slug}.mp3`)
     if (fs.existsSync(filePath)) {
         res.sendFile(filePath)
     } else {

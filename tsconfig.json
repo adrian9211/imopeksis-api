@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es2020",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "types": ["node"]
+    "allowSyntheticDefaultImports": true,
+    "strict": true
   },
-  "include": ["src"],
+  "include": [
+    "src/articles/**/*",
+    "routes/**/*"
+  ]
 }
