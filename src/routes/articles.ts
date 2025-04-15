@@ -61,14 +61,24 @@ router.get('/:slug/audio', (req, res) => {
 })
 
 router.get('/debug', async (req, res) => {
+    const fsPath = path.resolve('dist/articles/index.js')
+    const fileUrl = `file://${fsPath}`
+
+    console.log("📦 File path:", fsPath)
+
     try {
-        const mod = await import(`file://${path.resolve('dist/articles/index.js')}`)
-        console.log("✅ Successfully loaded:", Object.keys(mod.default))
-        res.send("Import OK!")
+        const exists = fs.existsSync(fsPath)
+        console.log("🧠 File exists:", exists)
+
+        if (!exists) return res.status(404).json({ error: "index.js does not exist on server" })
+
+        const mod = await import(fileUrl)
+        console.log("✅ Loaded module:", Object.keys(mod))
+
+        res.json({ status: "ok", keys: Object.keys(mod.default || {}) })
     } catch (err) {
-        console.error("🧨 Error in /debug:", err)
-        res.status(500).send("Import failed")
+        console.error("❌ Import failed:", err)
+        res.status(500).json({ error: err.message })
     }
 })
-
 export default router
