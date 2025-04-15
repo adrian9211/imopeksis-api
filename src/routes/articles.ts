@@ -11,6 +11,7 @@ const audioDir = path.resolve('public/audio')
 router.get('/', async (req, res) => {
     try {
         const { default: articleMap } = await import(`file://${indexPath}`)
+
         console.log("📦 Importing article index from:", indexPath)
         const articles = Object.values(articleMap)
             .filter((article: any) => article?.slug)
@@ -78,7 +79,6 @@ router.get('/debug', async (req, res) => {
         res.json({ status: "ok", keys: Object.keys(mod.default || {}) })
     } catch (err) {
         console.error("❌ Import failed:", err)
-        res.status(500).json({ error: err.message })
     }
 })
 export default router
