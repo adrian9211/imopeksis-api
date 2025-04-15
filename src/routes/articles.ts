@@ -11,7 +11,7 @@ const audioDir = path.resolve('public/audio')
 router.get('/', async (req, res) => {
     try {
         const { default: articleMap } = await import(`file://${indexPath}`)
-
+        console.log("📦 Importing article index from:", indexPath)
         const articles = Object.values(articleMap)
             .filter((article: any) => article?.slug)
             .map((article: any) => ({
@@ -57,6 +57,17 @@ router.get('/:slug/audio', (req, res) => {
         res.sendFile(filePath)
     } else {
         res.status(404).send('Audio not found')
+    }
+})
+
+router.get('/debug', async (req, res) => {
+    try {
+        const mod = await import(`file://${path.resolve('dist/articles/index.js')}`)
+        console.log("✅ Successfully loaded:", Object.keys(mod.default))
+        res.send("Import OK!")
+    } catch (err) {
+        console.error("🧨 Error in /debug:", err)
+        res.status(500).send("Import failed")
     }
 })
 
