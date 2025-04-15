@@ -65,23 +65,33 @@ router.get('/debug', async (req, res) => {
     const fsPath = path.resolve('dist/articles/index.js')
     const fileUrl = `file://${fsPath}`
 
-    console.log("📦 File path:", fsPath)
+    console.log("📦 Checking file:", fsPath)
 
     try {
         const exists = fs.existsSync(fsPath)
         console.log("🧠 File exists:", exists)
 
-        if (!exists) return res.status(404).json({ error: "index.js does not exist on server" })
+        if (!exists) {
+            return res.status(404).json({ error: "index.js does not exist on server" })
+        }
 
         const mod = await import(fileUrl)
-        console.log("✅ Loaded module:", Object.keys(mod))
+        console.log("✅ Module loaded")
 
-        res.json({ status: "ok", keys: Object.keys(mod.default || {}) })
-    } catch (err) {
-        const error = err as Error
-        console.error("❌ Import failed:", error)
-        res.status(500).json({ error: error.message })
+        res.json({
+            status: "ok",
+            keys: Object.keys(mod.default || {}),
+        })
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            console.error("❌ Import failed:", err.message)
+            res.status(500).json({ error: err.message })
+        } else {
+            console.error("❌ Unknown error:", err)
+            res.status(500).json({ error: "Unknown error occurred" })
+        }
     }
 })
+
 
 export default router
