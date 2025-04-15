@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": ".",
+    "rootDir": "src",
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "node",
@@ -9,8 +9,5 @@
     "allowSyntheticDefaultImports": true,
     "strict": true
   },
-  "include": [
-    "src/articles/**/*",
-    "routes/**/*"
-  ]
+  "include": ["src/**/*"]
 }
