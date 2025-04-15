@@ -6,36 +6,16 @@ const router = Router()
 const articlesDir = path.resolve('articles') // ✅ points to root-level articles folder
 
 router.get('/', async (req, res) => {
-    const files = fs.readdirSync(articlesDir).filter(file => file.endsWith('.ts'))
-
-    const articles = await Promise.all(
-        files.map(async (file) => {
-            try {
-                // Use file:// URL scheme for dynamic import in ESM
-                const filePath = path.resolve(articlesDir, file)
-                const { default: article } = await import(`file://${filePath}`)
-
-                return {
-                    title: article.title,
-                    slug: article.slug,
-                    audience: article.audience,
-                    keywords: article.keywords,
-                    content: article.content,
-                    audioUrl: article.audioUrl || null
-                }
-            } catch (err) {
-                if (err instanceof Error) {
-                    console.error(`❌ Failed to load article "${file}":`, err.message)
-                } else {
-                    console.error(`❌ Failed to load article "${file}":`, err)
-                }
-                return null
-            }
-        })
-    )
-
-    // Filter out failed/null results
-    res.json(articles.filter(Boolean))
+    res.json([
+        {
+            title: "Intro to Imopeksis",
+            slug: "intro-imopeksis",
+            audience: ["Parents", "Teachers"],
+            keywords: ["method", "basics"],
+            content: "Imopeksis is a philosophy of training and development...",
+            audioUrl: "https://imopeksis-api.onrender.com/audio/intro-imopeksis.mp3"
+        }
+    ])
 })
 
 router.get('/:slug/audio', (req, res) => {
