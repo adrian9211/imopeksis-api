@@ -9,5 +9,5 @@
     "allowSyntheticDefaultImports": true,
     "strict": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/articles/**/*"]
 }
