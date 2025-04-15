@@ -51,7 +51,7 @@ import { article as imopeksis_for_parents__developing_psychosocial_competencies_
 import { article as from_neurodidactics_to_practice__revolution_in_physical_education_with_the_imopeksis_method } from "./from-neurodidactics-to-practice--revolution-in-physical-education-with-the-imopeksis-method";
 import { article as child___a_silenced_genius__how_to_support_development_instead_of_hindering_it } from "./child---a-silenced-genius--how-to-support-development-instead-of-hindering-it";
 
-const articles = {
+export default {
     [understanding_psychosocial_competencies_in_children_and_adolescents___the_key_to_upbringing.slug]: understanding_psychosocial_competencies_in_children_and_adolescents___the_key_to_upbringing,
     [quality_of_movement__a_practical_lesson_in_imopeksis_methodology_in_dance.slug]: quality_of_movement__a_practical_lesson_in_imopeksis_methodology_in_dance,
     [imopeksis__from_knowledge_to_value___shaping_social_competencies_and_child_development.slug]: imopeksis__from_knowledge_to_value___shaping_social_competencies_and_child_development,
@@ -106,4 +106,3 @@ const articles = {
     [child___a_silenced_genius__how_to_support_development_instead_of_hindering_it.slug]: child___a_silenced_genius__how_to_support_development_instead_of_hindering_it
 };
 
-export default articles;
