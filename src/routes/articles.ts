@@ -10,7 +10,8 @@ const audioDir = path.resolve('public/audio')
 // GET /articles
 router.get('/', async (req, res) => {
     try {
-        const { default: articleMap } = await import(`file://${indexPath}`)
+        // const { default: articleMap } = await import(`file://${indexPath}`)
+        const { default: articleMap } = await import('file://' + path.resolve('dist/articles/index.js'))
 
         console.log("📦 Importing article index from:", indexPath)
         const articles = Object.values(articleMap)
