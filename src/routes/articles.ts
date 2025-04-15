@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 const router = Router()
-const indexPath = path.resolve('articles/index.ts')
+const indexPath = path.resolve('dist/articles/index.js') // compiled .js file
 const audioDir = path.resolve('public/audio')
 
 // GET /articles - List all articles

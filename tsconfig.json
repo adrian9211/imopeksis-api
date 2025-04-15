@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["node"]
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src"],
-  "exclude": ["articles"]
+  "include": ["articles/**/*.ts", "routes/**/*.ts"]
 }
