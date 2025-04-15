@@ -78,7 +78,10 @@ router.get('/debug', async (req, res) => {
 
         res.json({ status: "ok", keys: Object.keys(mod.default || {}) })
     } catch (err) {
-        console.error("❌ Import failed:", err)
+        const error = err as Error
+        console.error("❌ Import failed:", error)
+        res.status(500).json({ error: error.message })
     }
 })
+
 export default router
