@@ -1,7 +1,7 @@
 import express from 'express'
 import articlesRouter from './routes/articles.js'
 import path from 'path'
-import cors from "cors"
+import cors from 'cors'
 
 const app = express()
 app.use(cors())
