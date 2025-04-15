@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import path from 'path'
-import articlesRouter from './routes/articles' // no change if articles.ts is still in routes/
+import articlesRouter from './routes/articles.js'
 
 const app = express()
 
